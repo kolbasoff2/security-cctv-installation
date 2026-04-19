@@ -35,6 +35,7 @@ def handler(event: dict, context) -> dict:
     method = event.get('httpMethod', 'GET')
     path = event.get('path', '/')
     body = json.loads(event.get('body') or '{}')
+    print(f"REQUEST: method={method} path={repr(path)} params={event.get('queryStringParameters')} keys={list(event.keys())}")
 
     # GET /  — публичные данные для сайта (без авторизации)
     if method == 'GET' and path == '/':
