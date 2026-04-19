@@ -4,8 +4,8 @@ import Icon from "@/components/ui/icon";
 const NAV_ITEMS = [
   { label: "Главная", href: "#home" },
   { label: "Услуги", href: "#services" },
-  { label: "О нас", href: "#about" },
   { label: "Портфолио", href: "#portfolio" },
+  { label: "О нас", href: "#about" },
   { label: "Контакты", href: "#contacts" },
 ];
 
@@ -123,7 +123,7 @@ function Calculator() {
   const installPrice = includeInstall ? cameras * 1500 * objMult : 0;
 
   const total = Math.round(
-    cameras * camPrice * objMult + nvrPrice + archivePrice + installPrice
+    cameras * camPrice * objMult + nvrPrice + archivePrice + installPrice,
   );
 
   return (
@@ -132,8 +132,12 @@ function Calculator() {
         <div className="space-y-6">
           <div>
             <div className="flex justify-between mb-3">
-              <span className="text-sm text-gray-400 uppercase tracking-wider">Количество камер</span>
-              <span className="neon-text font-bold text-lg font-mono">{cameras} шт.</span>
+              <span className="text-sm text-gray-400 uppercase tracking-wider">
+                Количество камер
+              </span>
+              <span className="neon-text font-bold text-lg font-mono">
+                {cameras} шт.
+              </span>
             </div>
             <input
               type="range"
@@ -150,7 +154,9 @@ function Calculator() {
           </div>
 
           <div>
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">Тип камер</p>
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">
+              Тип камер
+            </p>
             <div className="grid grid-cols-2 gap-2">
               {CAMERA_TYPES.map((c) => (
                 <button
@@ -169,7 +175,9 @@ function Calculator() {
           </div>
 
           <div>
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">Тип объекта</p>
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">
+              Тип объекта
+            </p>
             <div className="grid grid-cols-2 gap-2">
               {OBJECT_TYPES.map((o) => (
                 <button
@@ -190,7 +198,9 @@ function Calculator() {
 
         <div className="space-y-6">
           <div>
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">Глубина архива</p>
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">
+              Глубина архива
+            </p>
             <div className="flex gap-2">
               {ARCHIVE_OPTIONS.map((a) => (
                 <button
@@ -209,23 +219,39 @@ function Calculator() {
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setIncludeNvr(!includeNvr)}>
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => setIncludeNvr(!includeNvr)}
+            >
               <div
                 className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
-                  includeNvr ? "border-cyan-400 bg-cyan-400/20" : "border-white/20"
+                  includeNvr
+                    ? "border-cyan-400 bg-cyan-400/20"
+                    : "border-white/20"
                 }`}
               >
-                {includeNvr && <Icon name="Check" size={12} className="text-cyan-400" />}
+                {includeNvr && (
+                  <Icon name="Check" size={12} className="text-cyan-400" />
+                )}
               </div>
-              <span className="text-sm text-gray-300">Регистратор (NVR/DVR)</span>
+              <span className="text-sm text-gray-300">
+                Регистратор (NVR/DVR)
+              </span>
             </div>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setIncludeInstall(!includeInstall)}>
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => setIncludeInstall(!includeInstall)}
+            >
               <div
                 className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
-                  includeInstall ? "border-cyan-400 bg-cyan-400/20" : "border-white/20"
+                  includeInstall
+                    ? "border-cyan-400 bg-cyan-400/20"
+                    : "border-white/20"
                 }`}
               >
-                {includeInstall && <Icon name="Check" size={12} className="text-cyan-400" />}
+                {includeInstall && (
+                  <Icon name="Check" size={12} className="text-cyan-400" />
+                )}
               </div>
               <span className="text-sm text-gray-300">Монтаж и настройка</span>
             </div>
@@ -234,7 +260,9 @@ function Calculator() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between text-gray-400">
               <span>Камеры ({cameras} шт.)</span>
-              <span>{(cameras * camPrice * objMult).toLocaleString("ru")} ₽</span>
+              <span>
+                {(cameras * camPrice * objMult).toLocaleString("ru")} ₽
+              </span>
             </div>
             {includeNvr && (
               <div className="flex justify-between text-gray-400">
@@ -257,9 +285,15 @@ function Calculator() {
           </div>
 
           <div className="neon-border rounded-xl p-4 text-center">
-            <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Итого от</p>
-            <p className="text-3xl font-bold neon-text font-mono">{total.toLocaleString("ru")} ₽</p>
-            <p className="text-xs text-gray-500 mt-1">Точная стоимость после выезда специалиста</p>
+            <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">
+              Итого от
+            </p>
+            <p className="text-3xl font-bold neon-text font-mono">
+              {total.toLocaleString("ru")} ₽
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Точная стоимость после выезда специалиста
+            </p>
           </div>
 
           <button className="neon-btn w-full py-3 rounded-xl text-sm font-semibold tracking-wide">
@@ -286,7 +320,9 @@ export default function Index() {
       {/* NAV */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-[#080d14]/90 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+          scrolled
+            ? "bg-[#080d14]/90 backdrop-blur-md border-b border-white/5"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -294,7 +330,10 @@ export default function Index() {
             <div className="w-8 h-8 rounded-lg bg-cyan-400/20 border border-cyan-400/40 flex items-center justify-center animate-pulse-neon">
               <Icon name="Eye" size={16} className="text-cyan-400" />
             </div>
-            <span className="font-bold text-lg tracking-wider" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <span
+              className="font-bold text-lg tracking-wider"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               SECURE<span className="neon-text">VISION</span>
             </span>
           </div>
@@ -311,11 +350,17 @@ export default function Index() {
             ))}
           </div>
 
-          <a href="#contacts" className="hidden md:block neon-btn px-5 py-2 rounded-lg text-sm">
+          <a
+            href="#contacts"
+            className="hidden md:block neon-btn px-5 py-2 rounded-lg text-sm"
+          >
             Вызвать специалиста
           </a>
 
-          <button className="md:hidden text-gray-400" onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className="md:hidden text-gray-400"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <Icon name={menuOpen ? "X" : "Menu"} size={24} />
           </button>
         </div>
@@ -332,7 +377,10 @@ export default function Index() {
                 {item.label}
               </a>
             ))}
-            <a href="#contacts" className="neon-btn block text-center py-3 rounded-xl">
+            <a
+              href="#contacts"
+              className="neon-btn block text-center py-3 rounded-xl"
+            >
               Вызвать специалиста
             </a>
           </div>
@@ -340,7 +388,10 @@ export default function Index() {
       </nav>
 
       {/* HERO */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center grid-bg">
+      <section
+        id="home"
+        className="relative min-h-screen flex items-center justify-center grid-bg"
+      >
         <div className="absolute inset-0">
           <img
             src="https://cdn.poehali.dev/projects/5dc205cf-8d1f-4a32-993d-e77f7850bc95/files/9ebf8634-a42b-4861-9d4f-58cc3bb18874.jpg"
@@ -361,7 +412,10 @@ export default function Index() {
               Профессиональная безопасность
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 fade-in-up delay-100" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <h1
+              className="text-5xl md:text-7xl font-bold leading-tight mb-6 fade-in-up delay-100"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               КОНТРОЛЬ.
               <br />
               <span className="neon-text">БЕЗОПАСНОСТЬ.</span>
@@ -370,11 +424,15 @@ export default function Index() {
             </h1>
 
             <p className="text-lg text-gray-400 max-w-xl mb-10 fade-in-up delay-200 leading-relaxed">
-              Проектируем, монтируем и обслуживаем системы видеонаблюдения для любых объектов. Гарантия 2 года, поддержка 24/7.
+              Проектируем, монтируем и обслуживаем системы видеонаблюдения для
+              любых объектов. Гарантия 2 года, поддержка 24/7.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 fade-in-up delay-300">
-              <a href="#calculator" className="neon-btn px-8 py-4 rounded-xl text-sm font-semibold tracking-wide inline-flex items-center gap-2 justify-center">
+              <a
+                href="#calculator"
+                className="neon-btn px-8 py-4 rounded-xl text-sm font-semibold tracking-wide inline-flex items-center gap-2 justify-center"
+              >
                 <Icon name="Calculator" size={18} />
                 Рассчитать стоимость
               </a>
@@ -398,10 +456,15 @@ export default function Index() {
                   className="py-6 px-4 text-center border-r border-white/5 last:border-0 fade-in-up"
                   style={{ animationDelay: `${0.4 + i * 0.1}s` }}
                 >
-                  <div className="text-2xl md:text-3xl font-bold neon-text mb-1" style={{ fontFamily: "Oswald, sans-serif" }}>
+                  <div
+                    className="text-2xl md:text-3xl font-bold neon-text mb-1"
+                    style={{ fontFamily: "Oswald, sans-serif" }}
+                  >
                     {s.value}
                   </div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">{s.label}</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider">
+                    {s.label}
+                  </div>
                 </div>
               ))}
             </div>
@@ -413,22 +476,35 @@ export default function Index() {
       <section id="services" className="py-24 relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Что мы делаем</span>
-            <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">
+              Что мы делаем
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold mt-3"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               НАШИ <span className="neon-text">УСЛУГИ</span>
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {SERVICES.map((s, i) => (
-              <div key={i} className="card-dark rounded-2xl p-6 group cursor-pointer">
+              <div
+                key={i}
+                className="card-dark rounded-2xl p-6 group cursor-pointer"
+              >
                 <div className="w-12 h-12 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center mb-5 group-hover:bg-cyan-400/20 transition-all duration-300">
                   <Icon name={s.icon} size={22} className="text-cyan-400" />
                 </div>
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{ fontFamily: "Oswald, sans-serif" }}
+                >
                   {s.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {s.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -439,12 +515,18 @@ export default function Index() {
       <section id="calculator" className="py-24 relative bg-[#060b12]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Прозрачное ценообразование</span>
-            <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">
+              Прозрачное ценообразование
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold mt-3"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               КАЛЬКУЛЯТОР <span className="neon-text">СТОИМОСТИ</span>
             </h2>
             <p className="text-gray-400 mt-4 max-w-lg mx-auto text-sm">
-              Рассчитайте предварительную стоимость монтажа системы видеонаблюдения для вашего объекта
+              Рассчитайте предварительную стоимость монтажа системы
+              видеонаблюдения для вашего объекта
             </p>
           </div>
           <Calculator />
@@ -456,17 +538,27 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="text-xs text-cyan-400 tracking-widest uppercase">О компании</span>
-              <h2 className="text-4xl md:text-5xl font-bold mt-3 mb-6" style={{ fontFamily: "Oswald, sans-serif" }}>
+              <span className="text-xs text-cyan-400 tracking-widest uppercase">
+                О компании
+              </span>
+              <h2
+                className="text-4xl md:text-5xl font-bold mt-3 mb-6"
+                style={{ fontFamily: "Oswald, sans-serif" }}
+              >
                 МЫ — ЭКСПЕРТЫ
                 <br />
                 <span className="neon-text">БЕЗОПАСНОСТИ</span>
               </h2>
               <p className="text-gray-400 leading-relaxed mb-6">
-                С 2012 года мы специализируемся на проектировании и монтаже комплексных систем безопасности. За это время реализовали более 850 проектов различной сложности — от небольших офисов до крупных промышленных предприятий.
+                С 2012 года мы специализируемся на проектировании и монтаже
+                комплексных систем безопасности. За это время реализовали более
+                850 проектов различной сложности — от небольших офисов до
+                крупных промышленных предприятий.
               </p>
               <p className="text-gray-400 leading-relaxed mb-10">
-                В нашей команде 45 сертифицированных специалистов. Используем оборудование ведущих мировых производителей: Hikvision, Dahua, Axis, Bosch. Гарантия на все работы — 2 года.
+                В нашей команде 45 сертифицированных специалистов. Используем
+                оборудование ведущих мировых производителей: Hikvision, Dahua,
+                Axis, Bosch. Гарантия на все работы — 2 года.
               </p>
 
               <div className="grid grid-cols-2 gap-4">
@@ -478,7 +570,11 @@ export default function Index() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-lg bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0">
-                      <Icon name={item.icon} size={16} className="text-cyan-400" />
+                      <Icon
+                        name={item.icon}
+                        size={16}
+                        className="text-cyan-400"
+                      />
                     </div>
                     <span className="text-sm text-gray-300">{item.text}</span>
                   </div>
@@ -492,15 +588,31 @@ export default function Index() {
                   <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <div className="w-2 h-2 rounded-full bg-yellow-500" />
                   <div className="w-2 h-2 rounded-full bg-green-500" />
-                  <span className="text-xs text-gray-600 ml-2 font-mono">LIVE MONITOR — SECURE</span>
+                  <span className="text-xs text-gray-600 ml-2 font-mono">
+                    LIVE MONITOR — SECURE
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  {["CAM 01 — Вход", "CAM 02 — Склад", "CAM 03 — Периметр", "CAM 04 — Офис"].map((cam, i) => (
-                    <div key={i} className="aspect-video bg-black/60 rounded-lg border border-cyan-400/10 relative overflow-hidden flex items-center justify-center">
-                      <div className="absolute top-1 left-2 text-xs text-cyan-400/60 font-mono">{cam}</div>
+                  {[
+                    "CAM 01 — Вход",
+                    "CAM 02 — Склад",
+                    "CAM 03 — Периметр",
+                    "CAM 04 — Офис",
+                  ].map((cam, i) => (
+                    <div
+                      key={i}
+                      className="aspect-video bg-black/60 rounded-lg border border-cyan-400/10 relative overflow-hidden flex items-center justify-center"
+                    >
+                      <div className="absolute top-1 left-2 text-xs text-cyan-400/60 font-mono">
+                        {cam}
+                      </div>
                       <div className="absolute top-1 right-2 w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                      <Icon name="Camera" size={24} className="text-cyan-400/20" />
+                      <Icon
+                        name="Camera"
+                        size={24}
+                        className="text-cyan-400/20"
+                      />
                     </div>
                   ))}
                 </div>
@@ -528,8 +640,13 @@ export default function Index() {
       <section id="portfolio" className="py-24 bg-[#060b12]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Наши работы</span>
-            <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">
+              Наши работы
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold mt-3"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               <span className="neon-text">ПОРТФОЛИО</span> ПРОЕКТОВ
             </h2>
           </div>
@@ -541,10 +658,21 @@ export default function Index() {
                 className={`rounded-2xl p-6 border border-white/6 bg-gradient-to-br ${p.color} relative overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30`}
               >
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Icon name="ExternalLink" size={16} className="text-cyan-400" />
+                  <Icon
+                    name="ExternalLink"
+                    size={16}
+                    className="text-cyan-400"
+                  />
                 </div>
-                <span className="text-xs text-cyan-400/70 tracking-wider uppercase">{p.tag}</span>
-                <h3 className="text-xl font-bold mt-2 mb-2" style={{ fontFamily: "Oswald, sans-serif" }}>{p.title}</h3>
+                <span className="text-xs text-cyan-400/70 tracking-wider uppercase">
+                  {p.tag}
+                </span>
+                <h3
+                  className="text-xl font-bold mt-2 mb-2"
+                  style={{ fontFamily: "Oswald, sans-serif" }}
+                >
+                  {p.title}
+                </h3>
                 <p className="text-gray-400 text-sm">{p.desc}</p>
                 <div className="mt-4 w-8 h-0.5 bg-cyan-400/40 group-hover:w-full transition-all duration-500" />
               </div>
@@ -557,18 +685,27 @@ export default function Index() {
       <section id="contacts" className="py-24 relative grid-bg">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Связаться</span>
-            <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">
+              Связаться
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold mt-3"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               ОСТАВЬТЕ <span className="neon-text">ЗАЯВКУ</span>
             </h2>
-            <p className="text-gray-400 mt-4 text-sm">Перезвоним в течение 30 минут</p>
+            <p className="text-gray-400 mt-4 text-sm">
+              Перезвоним в течение 30 минут
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
             <div className="neon-border rounded-2xl p-8 bg-[#060b12]">
               <div className="space-y-5">
                 <div>
-                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">Ваше имя</label>
+                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
+                    Ваше имя
+                  </label>
                   <input
                     type="text"
                     placeholder="Иван Иванов"
@@ -576,7 +713,9 @@ export default function Index() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">Телефон</label>
+                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
+                    Телефон
+                  </label>
                   <input
                     type="tel"
                     placeholder="+7 (___) ___-__-__"
@@ -584,7 +723,9 @@ export default function Index() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">Объект</label>
+                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
+                    Объект
+                  </label>
                   <input
                     type="text"
                     placeholder="Офис, склад, магазин..."
@@ -592,7 +733,9 @@ export default function Index() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">Комментарий</label>
+                  <label className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
+                    Комментарий
+                  </label>
                   <textarea
                     placeholder="Опишите задачу..."
                     rows={3}
@@ -607,17 +750,42 @@ export default function Index() {
 
             <div className="space-y-6">
               {[
-                { icon: "Phone", label: "Телефон", value: "+7 (800) 123-45-67", sub: "Бесплатно по России" },
-                { icon: "Mail", label: "Email", value: "info@securevision.ru", sub: "Ответим в течение часа" },
-                { icon: "MapPin", label: "Адрес", value: "Москва, ул. Охраны, 1", sub: "Работаем по всей РФ" },
-                { icon: "Clock", label: "Время работы", value: "Пн–Пт 9:00–21:00", sub: "Экстренный выезд 24/7" },
+                {
+                  icon: "Phone",
+                  label: "Телефон",
+                  value: "+7 (800) 123-45-67",
+                  sub: "Бесплатно по России",
+                },
+                {
+                  icon: "Mail",
+                  label: "Email",
+                  value: "info@securevision.ru",
+                  sub: "Ответим в течение часа",
+                },
+                {
+                  icon: "MapPin",
+                  label: "Адрес",
+                  value: "Москва, ул. Охраны, 1",
+                  sub: "Работаем по всей РФ",
+                },
+                {
+                  icon: "Clock",
+                  label: "Время работы",
+                  value: "Пн–Пт 9:00–21:00",
+                  sub: "Экстренный выезд 24/7",
+                },
               ].map((c, i) => (
-                <div key={i} className="flex items-start gap-4 p-5 card-dark rounded-2xl">
+                <div
+                  key={i}
+                  className="flex items-start gap-4 p-5 card-dark rounded-2xl"
+                >
                   <div className="w-11 h-11 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0">
                     <Icon name={c.icon} size={18} className="text-cyan-400" />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">{c.label}</div>
+                    <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      {c.label}
+                    </div>
                     <div className="text-white font-medium">{c.value}</div>
                     <div className="text-xs text-gray-500 mt-0.5">{c.sub}</div>
                   </div>
@@ -635,14 +803,23 @@ export default function Index() {
             <div className="w-6 h-6 rounded bg-cyan-400/20 border border-cyan-400/30 flex items-center justify-center">
               <Icon name="Eye" size={12} className="text-cyan-400" />
             </div>
-            <span className="font-bold text-sm tracking-wider" style={{ fontFamily: "Oswald, sans-serif" }}>
+            <span
+              className="font-bold text-sm tracking-wider"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
               SECURE<span className="neon-text">VISION</span>
             </span>
           </div>
-          <p className="text-xs text-gray-600">© 2024 SecureVision. Все права защищены.</p>
+          <p className="text-xs text-gray-600">
+            © 2024 SecureVision. Все права защищены.
+          </p>
           <div className="flex gap-6 text-xs text-gray-500">
-            <a href="#" className="hover:text-cyan-400 transition-colors">Политика конфиденциальности</a>
-            <a href="#" className="hover:text-cyan-400 transition-colors">Оферта</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">
+              Политика конфиденциальности
+            </a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">
+              Оферта
+            </a>
           </div>
         </div>
       </footer>
