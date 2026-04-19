@@ -34,7 +34,7 @@ export default function Admin() {
   const [inputToken, setInputToken] = useState("");
   const [authError, setAuthError] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
-  const [tab, setTab] = useState<"leads" | "settings" | "services" | "portfolio" | "calc">("leads");
+  const [tab, setTab] = useState<"leads" | "settings" | "content" | "services" | "portfolio" | "calc">("leads");
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [settings, setSettings] = useState<Record<string, string>>({});
@@ -208,6 +208,7 @@ export default function Admin() {
   const TABS = [
     { key: "leads", label: "Заявки", icon: "Inbox" },
     { key: "settings", label: "Настройки", icon: "Settings" },
+    { key: "content", label: "Контент", icon: "FileText" },
     { key: "services", label: "Услуги", icon: "Star" },
     { key: "portfolio", label: "Портфолио", icon: "Briefcase" },
     { key: "calc", label: "Калькулятор", icon: "Calculator" },
@@ -351,6 +352,76 @@ export default function Admin() {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* КОНТЕНТ */}
+        {tab === "content" && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Контент сайта</h2>
+              <button onClick={saveSettings} className={`font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors ${settingsDirty ? "bg-cyan-500 hover:bg-cyan-400 text-black" : "bg-slate-700 text-slate-400 cursor-default"}`}>
+                <Icon name="Save" size={16} />
+                {settingsDirty ? "Сохранить" : "Сохранено"}
+              </button>
+            </div>
+            <div className="grid gap-6 max-w-2xl">
+              {[
+                { group: "Секция «О компании»", fields: [
+                  { key: "about_subtitle", label: "Подзаголовок" },
+                  { key: "about_title", label: "Заголовок" },
+                  { key: "about_text1", label: "Абзац 1", multiline: true },
+                  { key: "about_text2", label: "Абзац 2", multiline: true },
+                  { key: "about_badge1", label: "Преимущество 1" },
+                  { key: "about_badge2", label: "Преимущество 2" },
+                  { key: "about_badge3", label: "Преимущество 3" },
+                ]},
+                { group: "Секция «Услуги»", fields: [
+                  { key: "services_subtitle", label: "Подзаголовок" },
+                  { key: "services_title", label: "Заголовок" },
+                ]},
+                { group: "Секция «Портфолио»", fields: [
+                  { key: "portfolio_subtitle", label: "Подзаголовок" },
+                  { key: "portfolio_title", label: "Заголовок" },
+                ]},
+                { group: "Секция «Калькулятор»", fields: [
+                  { key: "calc_subtitle", label: "Подзаголовок" },
+                  { key: "calc_title", label: "Заголовок" },
+                  { key: "calc_description", label: "Описание", multiline: true },
+                ]},
+                { group: "Секция «Контакты»", fields: [
+                  { key: "contacts_subtitle", label: "Подзаголовок" },
+                  { key: "contacts_title", label: "Заголовок" },
+                  { key: "contacts_description", label: "Описание" },
+                ]},
+              ].map(({ group, fields }) => (
+                <div key={group} className="bg-slate-900 border border-slate-700 rounded-xl p-4">
+                  <h3 className="text-cyan-400 font-semibold text-sm mb-3">{group}</h3>
+                  <div className="grid gap-3">
+                    {fields.map(({ key, label, multiline }) => (
+                      <div key={key}>
+                        <label className="text-slate-400 text-sm mb-1 block">{label}</label>
+                        {multiline ? (
+                          <textarea
+                            rows={3}
+                            value={settings[key] || ""}
+                            onChange={e => { setSettings({ ...settings, [key]: e.target.value }); setSettingsDirty(true); }}
+                            className="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 resize-none"
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            value={settings[key] || ""}
+                            onChange={e => { setSettings({ ...settings, [key]: e.target.value }); setSettingsDirty(true); }}
+                            className="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

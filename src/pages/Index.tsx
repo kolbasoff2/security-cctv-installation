@@ -352,9 +352,9 @@ export default function Index() {
       <section id="services" className="py-24 relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Что мы делаем</span>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">{s.services_subtitle || "Что мы делаем"}</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
-              НАШИ <span className="neon-text">УСЛУГИ</span>
+              {s.services_title || "НАШИ УСЛУГИ"}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -375,11 +375,11 @@ export default function Index() {
       <section id="calculator" className="py-24 relative bg-[#060b12]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Прозрачное ценообразование</span>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">{s.calc_subtitle || "Прозрачное ценообразование"}</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
-              КАЛЬКУЛЯТОР <span className="neon-text">СТОИМОСТИ</span>
+              {s.calc_title || "КАЛЬКУЛЯТОР СТОИМОСТИ"}
             </h2>
-            <p className="text-gray-400 mt-4 max-w-lg mx-auto text-sm">Рассчитайте предварительную стоимость монтажа системы видеонаблюдения для вашего объекта</p>
+            <p className="text-gray-400 mt-4 max-w-lg mx-auto text-sm">{s.calc_description || "Рассчитайте предварительную стоимость монтажа системы видеонаблюдения для вашего объекта"}</p>
           </div>
           <Calculator data={data} />
         </div>
@@ -389,9 +389,9 @@ export default function Index() {
       <section id="portfolio" className="py-24 bg-[#060b12]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Наши работы</span>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">{s.portfolio_subtitle || "Наши работы"}</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
-              <span className="neon-text">ПОРТФОЛИО</span> ПРОЕКТОВ
+              {s.portfolio_title || "ПОРТФОЛИО ПРОЕКТОВ"}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -415,22 +415,22 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="text-xs text-cyan-400 tracking-widest uppercase">О компании</span>
+              <span className="text-xs text-cyan-400 tracking-widest uppercase">{s.about_subtitle || "О компании"}</span>
               <h2 className="text-4xl md:text-5xl font-bold mt-3 mb-6" style={{ fontFamily: "Oswald, sans-serif" }}>
-                МЫ — ЭКСПЕРТЫ<br /><span className="neon-text">БЕЗОПАСНОСТИ</span>
+                {s.about_title || "МЫ — ЭКСПЕРТЫ БЕЗОПАСНОСТИ"}
               </h2>
               <p className="text-gray-400 leading-relaxed mb-6">
-                С {s.about_founded} года мы специализируемся на проектировании и монтаже комплексных систем безопасности. За это время реализовали более 850 проектов различной сложности — от небольших офисов до крупных промышленных предприятий.
+                {s.about_text1 || `С ${s.about_founded} года мы специализируемся на проектировании и монтаже комплексных систем безопасности.`}
               </p>
               <p className="text-gray-400 leading-relaxed mb-10">
-                В нашей команде {s.about_specialists} сертифицированных специалистов. Используем оборудование ведущих мировых производителей: Hikvision, Dahua, Axis, Bosch. Гарантия на все работы — {s.about_guarantee}.
+                {s.about_text2 || `В нашей команде ${s.about_specialists} сертифицированных специалистов. Гарантия на все работы — ${s.about_guarantee}.`}
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: "Award", text: "Лицензия МВД РФ" },
+                  { icon: "Award", text: s.about_badge1 || "Лицензия МВД РФ" },
                   { icon: "Users", text: `${s.about_specialists} специалистов` },
-                  { icon: "MapPin", text: "Работаем по всей РФ" },
-                  { icon: "Clock", text: "Выезд за 2 часа" },
+                  { icon: "MapPin", text: s.about_badge2 || "Работаем по всей РФ" },
+                  { icon: "Clock", text: s.about_badge3 || "Выезд за 2 часа" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-lg bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0">
@@ -480,11 +480,11 @@ export default function Index() {
       <section id="contacts" className="py-24 relative grid-bg">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">Связаться</span>
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">{s.contacts_subtitle || "Связаться"}</span>
             <h2 className="text-4xl md:text-5xl font-bold mt-3" style={{ fontFamily: "Oswald, sans-serif" }}>
-              ОСТАВЬТЕ <span className="neon-text">ЗАЯВКУ</span>
+              {s.contacts_title || "ОСТАВЬТЕ ЗАЯВКУ"}
             </h2>
-            <p className="text-gray-400 mt-4 text-sm">Перезвоним в течение 30 минут</p>
+            <p className="text-gray-400 mt-4 text-sm">{s.contacts_description || "Перезвоним в течение 30 минут"}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
