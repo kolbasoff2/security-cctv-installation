@@ -550,6 +550,7 @@ export default function Index() {
           <div className="flex gap-6 text-xs text-gray-500">
             <a href="#" className="hover:text-cyan-400 transition-colors">Политика конфиденциальности</a>
             <a href="#" className="hover:text-cyan-400 transition-colors">Оферта</a>
+            <a href="/admin" className="text-gray-800 hover:text-gray-600 transition-colors select-none">●</a>
           </div>
         </div>
       </footer>
