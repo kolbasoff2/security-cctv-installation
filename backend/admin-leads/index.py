@@ -10,18 +10,14 @@ def get_conn():
 
 CORS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
 }
 
 def check_auth(event):
     expected = os.environ.get('ADMIN_PASSWORD', '')
     params = event.get('queryStringParameters') or {}
     token = params.get('token', '')
-    if token and token == expected:
-        return True
-    headers = event.get('headers', {})
-    token = headers.get('X-Admin-Token') or headers.get('x-admin-token') or ''
     return token == expected
 
 def handler(event: dict, context) -> dict:
@@ -30,11 +26,13 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 200, 'headers': CORS_HEADERS, 'body': ''}
 
     method = event.get('httpMethod', 'GET')
-    path = event.get('path', '/')
+    params = event.get('queryStringParameters') or {}
+    action = params.get('action', '')
+    rid = params.get('id', '')
     body = json.loads(event.get('body') or '{}')
 
-    # POST / — создать заявку (публичный)
-    if method == 'POST' and path == '/':
+    # POST без action — создать заявку (публичный)
+    if method == 'POST' and not action:
         conn = get_conn()
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(
@@ -44,57 +42,37 @@ def handler(event: dict, context) -> dict:
         row = dict(cur.fetchone())
         conn.commit()
         conn.close()
-        return {
-            'statusCode': 200,
-            'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'},
-            'body': json.dumps({'ok': True, 'id': row['id']}, ensure_ascii=False, default=str)
-        }
+        return {'statusCode': 200, 'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'}, 'body': json.dumps({'ok': True, 'id': row['id']}, ensure_ascii=False, default=str)}
 
     # Всё остальное — только для админа
     if not check_auth(event):
-        return {
-            'statusCode': 401,
-            'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'},
-            'body': json.dumps({'error': 'Unauthorized'})
-        }
+        return {'statusCode': 401, 'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'}, 'body': json.dumps({'error': 'Unauthorized'})}
 
     conn = get_conn()
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
-    # GET / — список заявок
-    if method == 'GET' and path == '/':
-        status_filter = event.get('queryStringParameters', {}) or {}
-        status = status_filter.get('status')
+    # GET или ?action=list — список заявок
+    if method == 'GET' or action == 'list':
+        status = params.get('status')
         if status:
             cur.execute("SELECT * FROM leads WHERE status=%s ORDER BY created_at DESC", (status,))
         else:
             cur.execute("SELECT * FROM leads ORDER BY created_at DESC")
         rows = [dict(r) for r in cur.fetchall()]
         conn.close()
-        return {
-            'statusCode': 200,
-            'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'},
-            'body': json.dumps(rows, ensure_ascii=False, default=str)
-        }
+        return {'statusCode': 200, 'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'}, 'body': json.dumps(rows, ensure_ascii=False, default=str)}
 
-    # PUT /{id} — обновить статус заявки
-    if method == 'PUT' and len(path.split('/')) == 2:
-        lid = path.split('/')[-1]
-        new_status = body.get('status', 'new')
-        cur.execute("UPDATE leads SET status=%s WHERE id=%s RETURNING *", (new_status, lid))
+    # POST ?action=update_status&id=1
+    if action == 'update_status' and rid:
+        cur.execute("UPDATE leads SET status=%s WHERE id=%s RETURNING *", (body.get('status', 'new'), rid))
         row = dict(cur.fetchone())
         conn.commit()
         conn.close()
-        return {
-            'statusCode': 200,
-            'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'},
-            'body': json.dumps(row, ensure_ascii=False, default=str)
-        }
+        return {'statusCode': 200, 'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'}, 'body': json.dumps(row, ensure_ascii=False, default=str)}
 
-    # DELETE /{id}
-    if method == 'DELETE' and len(path.split('/')) == 2:
-        lid = path.split('/')[-1]
-        cur.execute("DELETE FROM leads WHERE id=%s", (lid,))
+    # POST ?action=delete&id=1
+    if action == 'delete' and rid:
+        cur.execute("DELETE FROM leads WHERE id=%s", (rid,))
         conn.commit()
         conn.close()
         return {'statusCode': 200, 'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'}, 'body': json.dumps({'ok': True})}

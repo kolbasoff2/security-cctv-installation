@@ -4,13 +4,19 @@ import Icon from "@/components/ui/icon";
 const CONTENT_URL = "https://functions.poehali.dev/d23cd26c-dab5-4ec2-a68a-4e16bbffbf52";
 const LEADS_URL = "https://functions.poehali.dev/32cd8375-363d-4a79-9463-7c308290d2c7";
 
-function authHeaders() {
-  return { "Content-Type": "application/json" };
+function api(baseUrl: string, token: string, action: string, id?: string | number) {
+  let url = baseUrl + "?token=" + encodeURIComponent(token) + "&action=" + action;
+  if (id !== undefined) url += "&id=" + id;
+  return url;
 }
 
-function withToken(url: string, token: string) {
-  return url + (url.includes("?") ? "&" : "?") + "token=" + encodeURIComponent(token);
+function leadsApi(baseUrl: string, token: string, action: string, id?: number) {
+  let url = baseUrl + "?token=" + encodeURIComponent(token) + "&action=" + action;
+  if (id !== undefined) url += "&id=" + id;
+  return url;
 }
+
+const JSON_HEADERS = { "Content-Type": "application/json" };
 
 type Lead = { id: number; name: string; phone: string; object: string; comment: string; status: string; created_at: string };
 type Service = { id: number; icon: string; title: string; description: string; sort_order: number; is_active: boolean };
@@ -46,7 +52,7 @@ export default function Admin() {
   const [newPortfolio, setNewPortfolio] = useState({ title: "", description: "", type: "", gradient: "from-cyan-900/40 to-blue-900/40" });
 
   async function login() {
-    const res = await fetch(withToken(LEADS_URL + "/", inputToken));
+    const res = await fetch(leadsApi(LEADS_URL, inputToken, "list"));
     if (res.ok) {
       localStorage.setItem("admin_token", inputToken);
       setToken(inputToken);
@@ -59,8 +65,8 @@ export default function Admin() {
 
   async function loadData() {
     const [contentRes, leadsRes] = await Promise.all([
-      fetch(CONTENT_URL + "/"),
-      fetch(withToken(LEADS_URL + "/", token)),
+      fetch(CONTENT_URL),
+      fetch(leadsApi(LEADS_URL, token, "list")),
     ]);
     const content = await contentRes.json();
     const leadsData = await leadsRes.json();
@@ -76,7 +82,7 @@ export default function Admin() {
 
   useEffect(() => {
     if (token) {
-      fetch(withToken(LEADS_URL + "/", token)).then(r => {
+      fetch(leadsApi(LEADS_URL, token, "list")).then(r => {
         if (r.ok) { setIsAuthed(true); loadData(); }
         else { localStorage.removeItem("admin_token"); setToken(""); }
       });
@@ -85,7 +91,7 @@ export default function Admin() {
 
   async function saveSettings() {
     try {
-      const res = await fetch(withToken(CONTENT_URL + "/settings", token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(settings) });
+      const res = await fetch(api(CONTENT_URL, token, "save_settings"), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(settings) });
       const data = await res.json();
       if (res.ok) setSettingsDirty(false);
       else alert("Ошибка: " + res.status + " " + JSON.stringify(data));
@@ -95,73 +101,73 @@ export default function Admin() {
   }
 
   async function updateLeadStatus(id: number, status: string) {
-    await fetch(withToken(LEADS_URL + "/" + id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify({ status }) });
+    await fetch(leadsApi(LEADS_URL, token, "update_status", id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify({ status }) });
     setLeads(leads.map(l => l.id === id ? { ...l, status } : l));
   }
 
   async function deleteLead(id: number) {
     if (!confirm("Удалить заявку?")) return;
-    await fetch(withToken(LEADS_URL + "/" + id, token), { method: "DELETE", headers: authHeaders() });
+    await fetch(leadsApi(LEADS_URL, token, "delete", id), { method: "POST", headers: JSON_HEADERS, body: "{}" });
     setLeads(leads.filter(l => l.id !== id));
   }
 
   async function saveService(s: Service) {
-    await fetch(withToken(CONTENT_URL + "/services/" + s.id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(s) });
+    await fetch(api(CONTENT_URL, token, "save_service", s.id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(s) });
     setServices(services.map(x => x.id === s.id ? s : x));
     setEditingService(null);
   }
 
   async function deleteService(id: number) {
     if (!confirm("Удалить услугу?")) return;
-    await fetch(withToken(CONTENT_URL + "/services/" + id, token), { method: "DELETE", headers: authHeaders() });
+    await fetch(api(CONTENT_URL, token, "delete_service", id), { method: "POST", headers: JSON_HEADERS, body: "{}" });
     setServices(services.filter(x => x.id !== id));
   }
 
   async function addService() {
     if (!newService.title) return;
-    const res = await fetch(withToken(CONTENT_URL + "/services", token), { method: "POST", headers: authHeaders(), body: JSON.stringify(newService) });
+    const res = await fetch(api(CONTENT_URL, token, "add_service"), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(newService) });
     const row = await res.json();
     setServices([...services, row]);
     setNewService({ icon: "Star", title: "", description: "" });
   }
 
   async function savePortfolio(p: Portfolio) {
-    await fetch(withToken(CONTENT_URL + "/portfolio/" + p.id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(p) });
+    await fetch(api(CONTENT_URL, token, "save_portfolio", p.id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(p) });
     setPortfolio(portfolio.map(x => x.id === p.id ? p : x));
     setEditingPortfolio(null);
   }
 
   async function deletePortfolio(id: number) {
     if (!confirm("Удалить проект?")) return;
-    await fetch(withToken(CONTENT_URL + "/portfolio/" + id, token), { method: "DELETE", headers: authHeaders() });
+    await fetch(api(CONTENT_URL, token, "delete_portfolio", id), { method: "POST", headers: JSON_HEADERS, body: "{}" });
     setPortfolio(portfolio.filter(x => x.id !== id));
   }
 
   async function addPortfolio() {
     if (!newPortfolio.title) return;
-    const res = await fetch(withToken(CONTENT_URL + "/portfolio", token), { method: "POST", headers: authHeaders(), body: JSON.stringify(newPortfolio) });
+    const res = await fetch(api(CONTENT_URL, token, "add_portfolio"), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(newPortfolio) });
     const row = await res.json();
     setPortfolio([...portfolio, row]);
     setNewPortfolio({ title: "", description: "", type: "", gradient: "from-cyan-900/40 to-blue-900/40" });
   }
 
   async function updateCamera(c: CameraType) {
-    await fetch(withToken(CONTENT_URL + "/calc/cameras/" + c.id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(c) });
+    await fetch(api(CONTENT_URL, token, "save_camera", c.id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(c) });
     setCameraTypes(cameraTypes.map(x => x.id === c.id ? c : x));
   }
 
   async function updateObjectType(o: ObjectType) {
-    await fetch(withToken(CONTENT_URL + "/calc/objects/" + o.id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(o) });
+    await fetch(api(CONTENT_URL, token, "save_object", o.id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(o) });
     setObjectTypes(objectTypes.map(x => x.id === o.id ? o : x));
   }
 
   async function updateArchive(a: ArchiveOption) {
-    await fetch(withToken(CONTENT_URL + "/calc/archive/" + a.id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(a) });
+    await fetch(api(CONTENT_URL, token, "save_archive", a.id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(a) });
     setArchiveOptions(archiveOptions.map(x => x.id === a.id ? a : x));
   }
 
   async function updateStat(s: Stat) {
-    await fetch(withToken(CONTENT_URL + "/stats/" + s.id, token), { method: "PUT", headers: authHeaders(), body: JSON.stringify(s) });
+    await fetch(api(CONTENT_URL, token, "save_stat", s.id), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(s) });
     setStats(stats.map(x => x.id === s.id ? s : x));
   }
 
