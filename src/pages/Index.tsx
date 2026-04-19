@@ -250,7 +250,7 @@ export default function Index() {
               <Icon name="Eye" size={16} className="text-cyan-400" />
             </div>
             <span className="font-bold text-lg tracking-wider" style={{ fontFamily: "Oswald, sans-serif" }}>
-              SECURE<span className="neon-text">VISION</span>
+              {data.settings.company_name?.toUpperCase() || "SECUREVISION"}
             </span>
           </div>
 
