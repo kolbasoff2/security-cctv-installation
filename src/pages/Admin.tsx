@@ -93,8 +93,10 @@ export default function Admin() {
     try {
       const res = await fetch(api(CONTENT_URL, token, "save_settings"), { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(settings) });
       const data = await res.json();
-      if (res.ok) setSettingsDirty(false);
-      else alert("Ошибка: " + res.status + " " + JSON.stringify(data));
+      if (res.ok) {
+        setSettingsDirty(false);
+        localStorage.setItem("content_updated_at", Date.now().toString());
+      } else alert("Ошибка: " + res.status + " " + JSON.stringify(data));
     } catch (e) {
       alert("Ошибка сети: " + e);
     }

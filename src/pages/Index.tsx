@@ -216,7 +216,7 @@ export default function Index() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
+  function loadContent() {
     fetch(CONTENT_URL + "/")
       .then(r => r.json())
       .then(d => {
@@ -228,6 +228,15 @@ export default function Index() {
         }
       })
       .catch(() => {});
+  }
+
+  useEffect(() => {
+    loadContent();
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "content_updated_at") loadContent();
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   async function submitForm(e: React.FormEvent) {
