@@ -51,22 +51,10 @@ export default function Admin() {
   const [newService, setNewService] = useState({ icon: "Star", title: "", description: "" });
   const [newPortfolio, setNewPortfolio] = useState({ title: "", description: "", type: "", gradient: "from-cyan-900/40 to-blue-900/40" });
 
-  async function login() {
-    const res = await fetch(leadsApi(LEADS_URL, inputToken, "list"));
-    if (res.ok) {
-      localStorage.setItem("admin_token", inputToken);
-      setToken(inputToken);
-      setIsAuthed(true);
-      setAuthError(false);
-    } else {
-      setAuthError(true);
-    }
-  }
-
-  async function loadData() {
+  async function loadData(t: string) {
     const [contentRes, leadsRes] = await Promise.all([
       fetch(CONTENT_URL),
-      fetch(leadsApi(LEADS_URL, token, "list")),
+      fetch(leadsApi(LEADS_URL, t, "list")),
     ]);
     const content = await contentRes.json();
     const leadsData = await leadsRes.json();
@@ -83,11 +71,24 @@ export default function Admin() {
   useEffect(() => {
     if (token) {
       fetch(leadsApi(LEADS_URL, token, "list")).then(r => {
-        if (r.ok) { setIsAuthed(true); loadData(); }
+        if (r.ok) { setIsAuthed(true); loadData(token); }
         else { localStorage.removeItem("admin_token"); setToken(""); }
       });
     }
   }, []);
+
+  async function login() {
+    const res = await fetch(leadsApi(LEADS_URL, inputToken, "list"));
+    if (res.ok) {
+      localStorage.setItem("admin_token", inputToken);
+      setToken(inputToken);
+      setIsAuthed(true);
+      setAuthError(false);
+      loadData(inputToken);
+    } else {
+      setAuthError(true);
+    }
+  }
 
   async function saveSettings() {
     try {
