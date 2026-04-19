@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "POST lead",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Тест", "phone": "+7 999 000 00 00", "object": "Офис", "comment": "Тест"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

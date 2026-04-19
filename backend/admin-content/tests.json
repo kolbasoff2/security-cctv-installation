@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "GET public content",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"settings": {}, "services": [], "portfolio": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
