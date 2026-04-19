@@ -268,12 +268,10 @@ export default function Admin() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold">Настройки сайта</h2>
-              {settingsDirty && (
-                <button onClick={saveSettings} className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+              <button onClick={saveSettings} className={`font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors ${settingsDirty ? "bg-cyan-500 hover:bg-cyan-400 text-black" : "bg-slate-700 text-slate-400 cursor-default"}`}>
                   <Icon name="Save" size={16} />
-                  Сохранить
+                  {settingsDirty ? "Сохранить" : "Сохранено"}
                 </button>
-              )}
             </div>
             <div className="grid gap-4 max-w-2xl">
               {[
@@ -318,7 +316,7 @@ export default function Admin() {
                         type="text"
                         value={s.value}
                         onChange={e => setStats(stats.map(x => x.id === s.id ? { ...x, value: e.target.value } : x))}
-                        onBlur={() => updateStat(s)}
+                        onBlur={e => updateStat({ ...s, value: e.target.value })}
                         placeholder="Значение (12+)"
                         className="w-full bg-transparent text-cyan-400 font-bold text-lg focus:outline-none border-b border-slate-600 mb-1"
                       />
@@ -326,7 +324,7 @@ export default function Admin() {
                         type="text"
                         value={s.label}
                         onChange={e => setStats(stats.map(x => x.id === s.id ? { ...x, label: e.target.value } : x))}
-                        onBlur={() => updateStat(s)}
+                        onBlur={e => updateStat({ ...s, label: e.target.value })}
                         placeholder="Подпись"
                         className="w-full bg-transparent text-slate-300 text-sm focus:outline-none"
                       />
@@ -484,11 +482,11 @@ export default function Admin() {
                 {cameraTypes.map(c => (
                   <div key={c.id} className="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center gap-3">
                     <input value={c.label} onChange={e => setCameraTypes(cameraTypes.map(x => x.id === c.id ? { ...x, label: e.target.value } : x))}
-                      onBlur={() => updateCamera(c)}
+                      onBlur={e => updateCamera({ ...c, label: e.target.value })}
                       className="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-sm" />
                     <div className="flex items-center gap-2">
                       <input type="number" value={c.price} onChange={e => setCameraTypes(cameraTypes.map(x => x.id === c.id ? { ...x, price: +e.target.value } : x))}
-                        onBlur={() => updateCamera(c)}
+                        onBlur={e => updateCamera({ ...c, price: +e.target.value })}
                         className="w-28 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-sm" />
                       <span className="text-slate-400 text-sm">₽</span>
                     </div>
@@ -503,12 +501,12 @@ export default function Admin() {
                 {objectTypes.map(o => (
                   <div key={o.id} className="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center gap-3">
                     <input value={o.label} onChange={e => setObjectTypes(objectTypes.map(x => x.id === o.id ? { ...x, label: e.target.value } : x))}
-                      onBlur={() => updateObjectType(o)}
+                      onBlur={e => updateObjectType({ ...o, label: e.target.value })}
                       className="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-sm" />
                     <div className="flex items-center gap-2">
                       <span className="text-slate-400 text-sm">×</span>
                       <input type="number" step="0.1" value={o.mult} onChange={e => setObjectTypes(objectTypes.map(x => x.id === o.id ? { ...x, mult: +e.target.value } : x))}
-                        onBlur={() => updateObjectType(o)}
+                        onBlur={e => updateObjectType({ ...o, mult: +e.target.value })}
                         className="w-20 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-sm" />
                     </div>
                   </div>
@@ -522,11 +520,11 @@ export default function Admin() {
                 {archiveOptions.map(a => (
                   <div key={a.id} className="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center gap-3">
                     <input value={a.label} onChange={e => setArchiveOptions(archiveOptions.map(x => x.id === a.id ? { ...x, label: e.target.value } : x))}
-                      onBlur={() => updateArchive(a)}
+                      onBlur={e => updateArchive({ ...a, label: e.target.value })}
                       className="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-sm" />
                     <div className="flex items-center gap-2">
                       <input type="number" value={a.price} onChange={e => setArchiveOptions(archiveOptions.map(x => x.id === a.id ? { ...x, price: +e.target.value } : x))}
-                        onBlur={() => updateArchive(a)}
+                        onBlur={e => updateArchive({ ...a, price: +e.target.value })}
                         className="w-28 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-sm" />
                       <span className="text-slate-400 text-sm">₽</span>
                     </div>
