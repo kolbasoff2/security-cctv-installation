@@ -533,6 +533,51 @@ export default function Index() {
         </div>
       </section>
 
+      {/* PORTFOLIO */}
+      <section id="portfolio" className="py-24 bg-[#060b12]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="text-xs text-cyan-400 tracking-widest uppercase">
+              Наши работы
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold mt-3"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
+              <span className="neon-text">ПОРТФОЛИО</span> ПРОЕКТОВ
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PORTFOLIO.map((p, i) => (
+              <div
+                key={i}
+                className={`rounded-2xl p-6 border border-white/6 bg-gradient-to-br ${p.color} relative overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30`}
+              >
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Icon
+                    name="ExternalLink"
+                    size={16}
+                    className="text-cyan-400"
+                  />
+                </div>
+                <span className="text-xs text-cyan-400/70 tracking-wider uppercase">
+                  {p.tag}
+                </span>
+                <h3
+                  className="text-xl font-bold mt-2 mb-2"
+                  style={{ fontFamily: "Oswald, sans-serif" }}
+                >
+                  {p.title}
+                </h3>
+                <p className="text-gray-400 text-sm">{p.desc}</p>
+                <div className="mt-4 w-8 h-0.5 bg-cyan-400/40 group-hover:w-full transition-all duration-500" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ABOUT */}
       <section id="about" className="py-24 relative">
         <div className="max-w-7xl mx-auto px-6">
@@ -632,51 +677,6 @@ export default function Index() {
                 ГАРАНТИЯ 2 ГОДА
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PORTFOLIO */}
-      <section id="portfolio" className="py-24 bg-[#060b12]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-xs text-cyan-400 tracking-widest uppercase">
-              Наши работы
-            </span>
-            <h2
-              className="text-4xl md:text-5xl font-bold mt-3"
-              style={{ fontFamily: "Oswald, sans-serif" }}
-            >
-              <span className="neon-text">ПОРТФОЛИО</span> ПРОЕКТОВ
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PORTFOLIO.map((p, i) => (
-              <div
-                key={i}
-                className={`rounded-2xl p-6 border border-white/6 bg-gradient-to-br ${p.color} relative overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30`}
-              >
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Icon
-                    name="ExternalLink"
-                    size={16}
-                    className="text-cyan-400"
-                  />
-                </div>
-                <span className="text-xs text-cyan-400/70 tracking-wider uppercase">
-                  {p.tag}
-                </span>
-                <h3
-                  className="text-xl font-bold mt-2 mb-2"
-                  style={{ fontFamily: "Oswald, sans-serif" }}
-                >
-                  {p.title}
-                </h3>
-                <p className="text-gray-400 text-sm">{p.desc}</p>
-                <div className="mt-4 w-8 h-0.5 bg-cyan-400/40 group-hover:w-full transition-all duration-500" />
-              </div>
-            ))}
           </div>
         </div>
       </section>
