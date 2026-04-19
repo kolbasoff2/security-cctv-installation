@@ -33,9 +33,21 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 200, 'headers': CORS_HEADERS, 'body': ''}
 
     method = event.get('httpMethod', 'GET')
-    path = event.get('path', '/')
+    # Платформа передаёт полный URL в 'url', извлекаем path из него
+    raw_url = event.get('url', '')
+    if raw_url:
+        from urllib.parse import urlparse
+        parsed = urlparse(raw_url)
+        path = parsed.path or '/'
+        # Убираем префикс функции если есть (всё после UUID)
+        import re
+        m = re.match(r'^/[0-9a-f-]{36}(.*)', path)
+        if m:
+            path = m.group(1) or '/'
+    else:
+        path = event.get('path', '/')
     body = json.loads(event.get('body') or '{}')
-    print(f"REQUEST: method={method} path={repr(path)} params={event.get('queryStringParameters')} keys={list(event.keys())}")
+    print(f"REQUEST: method={method} path={repr(path)} url={repr(raw_url[:80])} params={event.get('queryStringParameters')}")
 
     # GET /  — публичные данные для сайта (без авторизации)
     if method == 'GET' and path == '/':
