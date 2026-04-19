@@ -16,8 +16,17 @@ CORS_HEADERS = {
 }
 
 def check_auth(event):
-    token = event.get('headers', {}).get('X-Admin-Token', '')
-    return token == os.environ.get('ADMIN_PASSWORD', '')
+    headers = event.get('headers', {})
+    # Платформа может передавать заголовки в разном регистре
+    token = (
+        headers.get('X-Admin-Token') or
+        headers.get('x-admin-token') or
+        headers.get('X-admin-token') or
+        ''
+    )
+    expected = os.environ.get('ADMIN_PASSWORD', '')
+    print(f"AUTH: headers={list(headers.keys())}, token_len={len(token)}, expected_len={len(expected)}, match={token==expected}")
+    return token == expected
 
 def handler(event: dict, context) -> dict:
     """API для управления контентом сайта: настройки, услуги, портфолио, калькулятор, статистика."""
