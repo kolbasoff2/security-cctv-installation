@@ -220,7 +220,12 @@ export default function Index() {
     fetch(CONTENT_URL + "/")
       .then(r => r.json())
       .then(d => {
-        if (d.settings && Object.keys(d.settings).length > 0) setData(d);
+        if (d.settings && Object.keys(d.settings).length > 0) {
+          setData(d);
+          if (d.settings.company_name) {
+            document.title = d.settings.company_name + " — Профессиональное охранное видеонаблюдение";
+          }
+        }
       })
       .catch(() => {});
   }, []);
@@ -543,7 +548,7 @@ export default function Index() {
               <Icon name="Eye" size={12} className="text-cyan-400" />
             </div>
             <span className="font-bold text-sm tracking-wider" style={{ fontFamily: "Oswald, sans-serif" }}>
-              SECURE<span className="neon-text">VISION</span>
+              {data.settings.company_name?.toUpperCase() || "SECUREVISION"}
             </span>
           </div>
           <p className="text-xs text-gray-600">© 2024 {s.company_name}. Все права защищены.</p>
