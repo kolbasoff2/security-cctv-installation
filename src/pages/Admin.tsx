@@ -80,8 +80,16 @@ export default function Admin() {
   }, []);
 
   async function saveSettings() {
-    await fetch(CONTENT_URL + "/settings", { method: "PUT", headers: authHeaders(token), body: JSON.stringify(settings) });
-    setSettingsDirty(false);
+    try {
+      const res = await fetch(CONTENT_URL + "/settings", { method: "PUT", headers: authHeaders(token), body: JSON.stringify(settings) });
+      const data = await res.json();
+      console.log("saveSettings status:", res.status, data);
+      if (res.ok) setSettingsDirty(false);
+      else alert("Ошибка сохранения: " + res.status + " " + JSON.stringify(data));
+    } catch (e) {
+      console.error("saveSettings error:", e);
+      alert("Ошибка сети: " + e);
+    }
   }
 
   async function updateLeadStatus(id: number, status: string) {
