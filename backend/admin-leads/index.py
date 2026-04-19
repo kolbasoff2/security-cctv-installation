@@ -15,8 +15,14 @@ CORS_HEADERS = {
 }
 
 def check_auth(event):
-    token = event.get('headers', {}).get('X-Admin-Token', '')
-    return token == os.environ.get('ADMIN_PASSWORD', '')
+    expected = os.environ.get('ADMIN_PASSWORD', '')
+    params = event.get('queryStringParameters') or {}
+    token = params.get('token', '')
+    if token and token == expected:
+        return True
+    headers = event.get('headers', {})
+    token = headers.get('X-Admin-Token') or headers.get('x-admin-token') or ''
+    return token == expected
 
 def handler(event: dict, context) -> dict:
     """API для заявок: создание (публичное) и просмотр/управление (только для админа)."""
